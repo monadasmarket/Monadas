@@ -59,9 +59,7 @@ export function Navbar() {
                 />
                 <div className="absolute inset-0 rounded-full ring-2 ring-[#FF7A42]/0 group-hover:ring-[#FF7A42]/30 transition-all duration-300" />
               </div>
-              <span className="font-extrabold text-2xl gradient-monadas-text tracking-tight hidden sm:block">
-                MONADAS
-              </span>
+              <span className="font-extrabold text-xl sm:text-2xl gradient-monadas-text tracking-tight">MONADAS</span>
             </Link>
 
             <div className="hidden md:flex items-center gap-2">
