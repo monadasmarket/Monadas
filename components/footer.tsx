@@ -67,13 +67,13 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Social Links - Removed WhatsApp, added Facebook, fixed Instagram hover */}
+            {/* Social Links - Updated Facebook and Instagram URLs */}
             <div className="text-center sm:text-left">
               <h3 className="font-bold text-[#4A4039] mb-4">🌟 Síguenos</h3>
               <div className="flex items-center justify-center sm:justify-start gap-3">
                 {/* Facebook */}
                 <a
-                  href="https://facebook.com/monadas"
+                  href="https://www.facebook.com/profile.php?id=61584313161970"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg"
@@ -84,9 +84,9 @@ export function Footer() {
                   </svg>
                 </a>
 
-                {/* Instagram - Fixed hover to match WhatsApp style */}
+                {/* Instagram */}
                 <a
-                  href="https://instagram.com/monadas"
+                  href="https://www.instagram.com/monadasmarket_/ "
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center text-[#E4405F] hover:bg-[#E4405F] hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg"

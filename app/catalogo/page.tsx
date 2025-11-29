@@ -1,14 +1,23 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Search, X } from "lucide-react"
 import { ProductCard } from "@/components/product-card"
 import { products, categories } from "@/lib/products"
 import { cn } from "@/lib/utils"
 
 export default function CatalogoPage() {
+  const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState("all")
+
+  useEffect(() => {
+    const searchParam = searchParams.get("search")
+    const categoryParam = searchParams.get("category")
+    if (searchParam) setSearchQuery(searchParam)
+    if (categoryParam) setActiveCategory(categoryParam)
+  }, [searchParams])
 
   const filteredProducts = useMemo(() => {
     let result = products
@@ -34,7 +43,7 @@ export default function CatalogoPage() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <h1 className="text-2xl md:text-3xl font-bold text-[#4A4039] mb-4 flex items-center gap-2">
             Catálogo
-            <span className="text-2xl">🛍️</span>
+            <span className="text-2xl">📦</span>
           </h1>
 
           {/* Search Bar */}

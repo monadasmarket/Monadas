@@ -4,9 +4,10 @@ import type React from "react"
 
 import Image from "next/image"
 import Link from "next/link"
-import { Plus, Check } from "lucide-react"
+import { Plus, Check, Heart } from "lucide-react"
 import { useState } from "react"
 import { useCart } from "@/context/cart-context"
+import { useFavorites } from "@/context/favorites-context"
 import type { Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
 
@@ -17,9 +18,11 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addItem, items } = useCart()
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites()
   const [isAdding, setIsAdding] = useState(false)
 
   const isInCart = items.some((item) => item.id === product.id)
+  const isFav = isFavorite(product.id)
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -34,6 +37,16 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
     })
 
     setTimeout(() => setIsAdding(false), 1000)
+  }
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isFav) {
+      removeFavorite(product.id)
+    } else {
+      addFavorite(product.id)
+    }
   }
 
   return (
@@ -58,6 +71,16 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               Novedad ✨
             </span>
           )}
+
+          {/* Favorite Button */}
+          <button
+            onClick={handleFavorite}
+            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all duration-300 shadow-md hover:scale-110"
+          >
+            <Heart
+              className={cn("w-5 h-5 transition-colors", isFav ? "fill-[#E33125] text-[#E33125]" : "text-[#4A4039]")}
+            />
+          </button>
 
           {/* Add Button */}
           <button

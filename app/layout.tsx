@@ -4,6 +4,7 @@ import { Nunito } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { CartProvider } from "@/context/cart-context"
+import { FavoritesProvider } from "@/context/favorites-context"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
@@ -35,10 +36,12 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${nunito.className} antialiased flex flex-col min-h-screen`}>
         <CartProvider>
-          <Navbar />
-          <main className="flex-1 pt-28 sm:pt-32">{children}</main>
-          <Footer />
-          <WhatsAppButton />
+          <FavoritesProvider>
+            <Navbar />
+            <main className="flex-1 pt-28 sm:pt-32">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+          </FavoritesProvider>
         </CartProvider>
         <Analytics />
       </body>

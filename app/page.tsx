@@ -1,12 +1,32 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Sparkles, Package, ShoppingBag } from "lucide-react"
+import { ArrowRight, Sparkles, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { products } from "@/lib/products"
+import { categories, products, getProductsByCategory } from "@/lib/products"
 import { ProductCard } from "@/components/product-card"
+import { CategoryCard } from "@/components/category-card"
 
 export default function HomePage() {
   const newProducts = products.filter((p) => p.isNew).slice(0, 4)
+
+  const categoriesWithProducts = categories
+    .filter((cat) => cat.id !== "all")
+    .map((cat) => ({
+      ...cat,
+      products: getProductsByCategory(cat.id),
+    }))
+    .filter((cat) => cat.products.length > 0)
+
+  // Category images mapping
+  const categoryImages: Record<string, string> = {
+    ropa: "/ropa-fashion-clothing.jpg",
+    accesorios: "/accesorios-accessories.jpg",
+    bolsas: "/bolsas-bags-fashion.jpg",
+    vapes: "/vapes-products.jpg",
+    hogar: "/hogar-home-decor.jpg",
+    tech: "/tech-gadgets-electronics.jpg",
+    belleza: "/belleza-beauty-makeup.jpg",
+  }
 
   return (
     <div className="min-h-screen">
@@ -50,7 +70,7 @@ export default function HomePage() {
                 size="lg"
                 className="gradient-monadas text-white font-semibold px-8 py-6 text-lg rounded-full hover:opacity-90 transition-opacity shadow-lg"
               >
-                <Link href="/catalogo">
+                <Link href="#categorias">
                   Ver catálogo
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
@@ -61,10 +81,7 @@ export default function HomePage() {
                 variant="outline"
                 className="border-2 border-[#FF7A42] text-[#E33125] font-semibold px-8 py-6 text-lg rounded-full hover:bg-[#FFF9F5] transition-colors bg-transparent"
               >
-                <Link href="/lista">
-                  <ShoppingBag className="mr-2 w-5 h-5" />
-                  Ir a mi lista
-                </Link>
+                <Link href="/lista">🛍️ Ir a mi lista</Link>
               </Button>
             </div>
           </div>
@@ -75,9 +92,35 @@ export default function HomePage() {
         <div className="absolute bottom-20 right-10 w-32 h-32 bg-[#E33125]/10 rounded-full blur-3xl" />
       </section>
 
+      {/* Categories Section */}
+      <section id="categorias" className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#4A4039] mb-4 text-center flex items-center justify-center gap-2">
+            Explora nuestras categorías
+            <span className="text-3xl">🛍️</span>
+          </h2>
+          <p className="text-center text-[#4A4039]/60 mb-12 max-w-2xl mx-auto">
+            Descubre nuestra amplia variedad de productos. Pasa el mouse sobre las categorías para ver un adelanto
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {categoriesWithProducts.map((cat) => (
+              <CategoryCard
+                key={cat.id}
+                categoryId={cat.id}
+                categoryName={cat.name}
+                categoryEmoji={cat.emoji}
+                products={cat.products}
+                image={categoryImages[cat.id] || "/placeholder.svg?height=400&width=400"}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* New Products Section */}
       {newProducts.length > 0 && (
-        <section className="py-16 px-4 bg-white">
+        <section className="py-16 px-4 bg-[#FFF9F5]">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-[#4A4039] flex items-center gap-2">
@@ -100,10 +143,10 @@ export default function HomePage() {
       )}
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-[#FFF9F5]">
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-3xl text-center shadow-sm">
+            <div className="bg-[#FFF9F5] p-6 rounded-3xl text-center shadow-sm">
               <div className="w-14 h-14 gradient-monadas rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Package className="w-7 h-7 text-white" />
               </div>
@@ -111,7 +154,7 @@ export default function HomePage() {
               <p className="text-[#4A4039]/70 text-sm">Hacemos envíos a partir de 3 piezas</p>
             </div>
 
-            <div className="bg-white p-6 rounded-3xl text-center shadow-sm">
+            <div className="bg-[#FFF9F5] p-6 rounded-3xl text-center shadow-sm">
               <div className="w-14 h-14 gradient-monadas rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">📍</span>
               </div>
@@ -119,7 +162,7 @@ export default function HomePage() {
               <p className="text-[#4A4039]/70 text-sm">Entregas personales cada jueves</p>
             </div>
 
-            <div className="bg-white p-6 rounded-3xl text-center shadow-sm">
+            <div className="bg-[#FFF9F5] p-6 rounded-3xl text-center shadow-sm">
               <div className="w-14 h-14 gradient-monadas rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">✔️</span>
               </div>
@@ -129,14 +172,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="py-8 px-4 bg-white border-t border-[#FF7A42]/10">
-        <div className="max-w-7xl mx-auto text-center">
-          <Image src="/images/image.png" alt="Monadas" width={48} height={48} className="rounded-full mx-auto mb-4" />
-          <p className="text-[#4A4039]/60 text-sm">© 2025 Monadas. Tu tienda de todo. 🐒</p>
-        </div>
-      </footer>
     </div>
   )
 }
